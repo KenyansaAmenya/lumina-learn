@@ -24,8 +24,15 @@ LuminaLearn demonstrates how AI can improve digital education by:
 
 # 🧠 System Architecture
 
-Student UI (HTML + Tailwind) │ ▼ FastAPI Backend │ ┌────┴─────┐ ▼ ▼ Groq
-LLM PostgreSQL (AI Engine) (Supabase DB)
+Student UI (HTML + Tailwind)
+        │
+        ▼
+FastAPI Backend
+        │
+   ┌────┴─────┐
+   ▼          ▼
+Groq LLM   PostgreSQL
+(AI Engine) (Supabase DB)
 
 ------------------------------------------------------------------------
 
@@ -55,11 +62,30 @@ LLM PostgreSQL (AI Engine) (Supabase DB)
 
 # 🧩 Project Structure
 
-LuminaLearn/ │ ├── backend/ │ ├── main.py │ ├── database.py │ ├──
-ai_service.py │ ├── analytics.py │ ├── models.py │ ├── config.py │ └──
-requirements.txt │ ├── frontend/ │ ├── index.html │ ├──
-teacher-dashboard.html │ ├── css/ │ │ └── styles.css │ └── js/ │ ├──
-api.js │ ├── student.js │ └── dashboard.js │ └── README.md
+lumina-learn/
+├── backend/
+│   ├── .env                    # SUPABASE_URL, GROQ_API_KEY
+│   ├── main.py                 # FastAPI app, lifespan management
+│   ├── config.py               # Pydantic settings, env loader
+│   ├── database.py             # asyncpg connection pool, init
+│   ├── models.py               # Pydantic schemas (Request/Response)
+│   ├── ai_service.py           # Groq client, prompt builders
+│   ├── analytics.py            # SQL queries for reports
+│   └── routes/
+│       ├── quiz.py             # POST /submit-answer
+│       ├── progress.py         # GET /student-progress/{id}
+│       ├── analytics.py        # GET /analytics/*
+│       └── questions.py        # POST /generate-question
+│   └── requirements.txt        # fastapi, uvicorn, asyncpg, groq, pydantic-settings
+│
+└── frontend/
+    ├── index.html              # Student quiz interface
+    ├── teacher-dashboard.html  # Analytics view
+    ├── css/styles.css
+    └── js/
+        ├── api.js              # Fetch wrappers
+        ├── quiz.js             # Student interaction
+        └── dashboard.js        # Charts/reports
 
 ------------------------------------------------------------------------
 
