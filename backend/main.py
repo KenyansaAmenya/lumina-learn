@@ -12,6 +12,7 @@ from models import (
 import ai_service
 import analytics
 import os
+import sys
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
