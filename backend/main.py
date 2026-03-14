@@ -11,6 +11,7 @@ from models import (
 )
 import ai_service
 import analytics
+import os
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -235,6 +236,8 @@ async def get_recent_mistakes(student_id: int, limit: int = 5):
 # analytics routes
 app.include_router(analytics.router, prefix="/analytics", tags=["analytics"])
 
+if __name__ != "__main__":
+    app = app
 
 if __name__ == "__main__":
     import uvicorn
