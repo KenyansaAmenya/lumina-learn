@@ -14,6 +14,14 @@
         {
             "src": "/(.*)",
             "dest": "backend/main.py"
+        },
+        {
+            "src": "teacher-dashboard",
+            "dest": "teacher-dashboard.html"
+        },
+        {
+            "src": "(.*)",
+            "dest": "index.html"
         }
     ]
 }
