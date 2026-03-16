@@ -1,4 +1,8 @@
-const API_BASE_URL = 'http://localhost:8000';
+/* local production 
+const API_BASE_URL = 'http://localhost:8000'; */
+
+/*Vercel*/
+const API_BASE_URL = 'https://lumina-learn-five.vercel.app/'
 
 class LuminaLearnAPI {
     async request(endpoint, options = {}) {
