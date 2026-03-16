@@ -1,7 +1,0 @@
-fastapi
-uvicorn
-asyncpg
-groq
-pydantic
-pydantic-settings
-python-dotenv

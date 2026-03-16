@@ -58,5 +58,3 @@ vendor/
 coverage/
 .nyc_output/
 htmlcov/
-
-backend
