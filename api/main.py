@@ -4,6 +4,8 @@ import sys
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException, Depends, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
+from mangum import Mangum
+from main import app
 
 # Local imports (same folder, no 'backend.' prefix)
 from config import get_settings, Settings
@@ -15,6 +17,8 @@ from models import (
 )
 import ai_service
 import analytics
+
+handler = Mangum(app)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
