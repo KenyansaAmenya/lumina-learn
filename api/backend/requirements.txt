@@ -1,7 +1,9 @@
 fastapi
-uvicorn
+uvicorn[standard]
 asyncpg
 groq
 pydantic
 pydantic-settings
 python-dotenv
+mangum
+httpx
