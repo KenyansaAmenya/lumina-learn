@@ -37,7 +37,12 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+        "http://localhost:8000",
+        "https://127.0.0.1:3000",
+        "https://lumina-learn-five.vercel.app",
+        "https://lumina-app-seven.vercel.app/"
+        ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
