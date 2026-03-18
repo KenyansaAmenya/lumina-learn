@@ -5,10 +5,11 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 if current_dir not in sys.path:
     sys.path.insert(0, current_dir)
 
-
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException, Depends, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
+import os
 
 from config import get_settings, Settings
 from database import init_db, close_db, get_connection, update_performance_history
@@ -41,15 +42,17 @@ app.add_middleware(
         "http://localhost:8000",
         "https://127.0.0.1:3000",
         "https://lumina-learn-five.vercel.app",
-        "https://lumina-app-mauve.vercel.app/"
-        ],
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
+# ==========================================
+# API ROUTES (all prefixed with /api/)
+# ==========================================
 
-@app.get("/")
+@app.get("/api/")
 async def root():
     return {
         "message": "Welcome to LuminaLearn API", 
@@ -58,12 +61,11 @@ async def root():
     }
 
 
-@app.post("/students", response_model=StudentResponse)
+@app.post("/api/students", response_model=StudentResponse)
 async def create_student(student: StudentCreate):
     """Registering a new student in the system."""
     async with get_connection() as conn:
         try:
-            # 
             row = await conn.fetchrow(
                 "INSERT INTO students (name, email) VALUES ($1, $2) RETURNING *",
                 student.name, student.email
@@ -73,7 +75,7 @@ async def create_student(student: StudentCreate):
             raise HTTPException(status_code=400, detail="Email already registered")
 
 
-@app.get("/students/{student_id}", response_model=StudentResponse)
+@app.get("/api/students/{student_id}", response_model=StudentResponse)
 async def get_student(student_id: int):
     """Get student by ID."""
     async with get_connection() as conn:
@@ -85,7 +87,7 @@ async def get_student(student_id: int):
         return dict(row)
 
 
-@app.post("/submit-answer", response_model=FeedbackResponse)
+@app.post("/api/submit-answer", response_model=FeedbackResponse)
 async def submit_answer(
     submission: AnswerSubmission,
     background_tasks: BackgroundTasks
@@ -140,7 +142,7 @@ async def submit_answer(
         )
 
 
-@app.post("/generate-question", response_model=GeneratedQuestion)
+@app.post("/api/generate-question", response_model=GeneratedQuestion)
 async def generate_question(request: QuestionGenerationRequest):
     """
     Generate a new AI-powered quiz question on any topic.
@@ -152,7 +154,7 @@ async def generate_question(request: QuestionGenerationRequest):
     return GeneratedQuestion(**question_data)
 
 
-@app.post("/get-hint", response_model=HintResponse)
+@app.post("/api/get-hint", response_model=HintResponse)
 async def get_hint(request: HintRequest):
     """
     Get a contextual hint for a question without revealing the answer.
@@ -173,7 +175,7 @@ async def get_hint(request: HintRequest):
     return HintResponse(hint=hint)
 
 
-@app.get("/student-progress/{student_id}", response_model=StudentProgress)
+@app.get("/api/student-progress/{student_id}", response_model=StudentProgress)
 async def get_student_progress(student_id: int):
     """Get detailed progress for a student."""
     async with get_connection() as conn:
@@ -222,7 +224,7 @@ async def get_student_progress(student_id: int):
         )
 
 
-@app.get("/recent-mistakes/{student_id}")
+@app.get("/api/recent-mistakes/{student_id}")
 async def get_recent_mistakes(student_id: int, limit: int = 5):
     """
     Get recent wrong answers with AI explanations for review.
@@ -245,9 +247,22 @@ async def get_recent_mistakes(student_id: int, limit: int = 5):
         return [dict(row) for row in rows]
 
 
-# analytics routes
-app.include_router(analytics.router, prefix="/analytics", tags=["analytics"])
+# Analytics routes with /api/analytics prefix
+app.include_router(analytics.router, prefix="/api/analytics", tags=["analytics"])
 
+
+# Get directory of current file
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+@app.get("/", response_class=FileResponse)
+async def serve_index():
+    return os.path.join(BASE_DIR, "index.html")
+
+@app.get("/teacher-dashboard", response_class=FileResponse)
+async def serve_teacher_dashboard():
+    return os.path.join(BASE_DIR, "teacher-dashboard.html")
+
+# Expose for Vercel
 if __name__ != "__main__":
     app = app
 
