@@ -20,6 +20,9 @@ from models import (
 )
 import ai_service
 import analytics
+from fastapi.staticfiles import StaticFiles
+
+app.mount("/frontend", StaticFiles(directory="frontend"), name="frontend")
   
 @asynccontextmanager
 async def lifespan(app: FastAPI):
