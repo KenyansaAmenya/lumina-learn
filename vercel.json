@@ -12,16 +12,20 @@
     ],
     "routes": [
         {
-            "src": "/(.*)",
+            "src": "/static/(.*)",
+            "dest": "/static/$1"
+        },
+        {
+            "src": "/api/(.*)",
             "dest": "backend/main.py"
         },
         {
-            "src": "teacher-dashboard",
-            "dest": "teacher-dashboard.html"
+            "src": "/teacher-dashboard",
+            "dest": "/teacher-dashboard.html"
         },
         {
-            "src": "(.*)",
-            "dest": "index.html"
+            "src": "/(.*)",
+            "dest": "/index.html"
         }
     ]
 }

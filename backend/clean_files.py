@@ -11,8 +11,8 @@ for filename in files_to_clean:
         with open(filename, 'w', encoding='utf-8') as f:
             f.write(content)
         
-        print(f"✅ Cleaned {filename}")
+        print(f" Cleaned {filename}")
     except FileNotFoundError:
-        print(f"❌ {filename} not found")
+        print(f" {filename} not found")
 
 print("Done! Files cleaned of BOM characters.")
