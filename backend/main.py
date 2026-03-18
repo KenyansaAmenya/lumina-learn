@@ -40,7 +40,7 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:8000",
         "https://127.0.0.1:3000",
-        "https://lumina-learn-five.vercel.app"
+        "https://lumina-learn-five.vercel.app",
         "https://lumina-webui.vercel.app"
         ],
     allow_credentials=True,
