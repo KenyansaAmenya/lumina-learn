@@ -10,41 +10,18 @@
             }
         }
     ],
-    "headers": [
-        {
-            "source": "/api/(.*)",
-            "headers": [
-                {
-                    "key": "Access-Control-Allow-Origin",
-                    "value": "https://lumina-webui.vercel.app"
-                },
-                {
-                    "key": "Access-Control-Allow-Methods",
-                    "value": "GET, POST, PUT, DELETE, OPTIONS"
-                },
-                {
-                    "key": "Access-Control-Allow-Headers",
-                    "value": "Content-Type, Authorization"
-                },
-                {
-                    "key": "Access-Control-Allow-Credentials",
-                    "value": "true"
-                }
-            ]
-        }
-    ],
     "routes": [
         {
-            "src": "/api/(.*)",
+            "src": "/(.*)",
             "dest": "backend/main.py"
         },
         {
-            "src": "/teacher-dashboard",
-            "dest": "/teacher-dashboard.html"
+            "src": "teacher-dashboard",
+            "dest": "teacher-dashboard.html"
         },
         {
-            "src": "/(.*)",
-            "dest": "/index.html"
+            "src": "(./*)",
+            "dest": "index.html"
         }
     ]
 }
