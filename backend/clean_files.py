@@ -1,4 +1,3 @@
-# save this as clean_files.py
 files_to_clean = ['requirements.txt', 'vercel.json']
 
 for filename in files_to_clean:

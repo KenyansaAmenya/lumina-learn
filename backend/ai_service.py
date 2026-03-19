@@ -1,9 +1,4 @@
 # Phase 2: Groq Integration
-# This will contain:
-# - Groq client initialization
-# - Prompt builders for correct/incorrect answers
-# - Question generation functions
-
 import os
 from groq import AsyncGroq
 from typing import Dict, Any 
