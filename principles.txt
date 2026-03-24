@@ -1,0 +1,6 @@
+| Principle              | Implementation                                                            |
+| ---------------------- | ------------------------------------------------------------------------- |
+| Single Responsibility  | Each file does one thing (connection vs schema vs business logic vs HTTP) |
+| Dependency Inversion   | Services depend on repository abstractions, not concrete SQL              |
+| Separation of Concerns | Database, business logic, and presentation layers are separate            |
+| Testability            | Can mock repositories to test services, mock services to test routes      |

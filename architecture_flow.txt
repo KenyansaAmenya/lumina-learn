@@ -1,0 +1,11 @@
+HTTP Request
+    ↓
+routes/*.py (Controller) - Validates input, extracts path/query params
+    ↓
+services/*.py (Service) - Business logic, orchestration, calculations
+    ↓
+repositories/*.py (Repository) - SQL queries, database access
+    ↓
+database.py (Connection) - asyncpg pool, raw connections
+    ↓
+PostgreSQL Database

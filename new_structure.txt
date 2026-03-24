@@ -1,0 +1,101 @@
+backend/
+├── main.py                      
+├── config.py                    
+├── database.py                  
+├── schema.py                    
+├── models.py                    
+├── dependencies.py              
+├── repositories/               
+│   ├── __init__.py
+│   ├── base.py
+│   ├── student_repository.py
+│   ├── quiz_repository.py
+│   └── analytics_repository.py
+├── services/                   
+│   ├── __init__.py
+│   ├── ai_service.py            
+│   ├── student_service.py
+│   ├── quiz_service.py
+│   ├── progress_service.py
+│   └── analytics_service.py
+└── routes/                     
+    ├── __init__.py
+    ├── students.py
+    ├── quiz.py
+    ├── progress.py
+    └── analytics.py
+
+
+# structure with what each file does
+
+backend/
+├── main.py                      # Application entry point. Wires everything together:
+│                                # - Initializes database connection pool
+│                                # - Creates database tables via schema.py
+│                                # - Sets up FastAPI app, middleware, CORS
+│                                # - Registers all route handlers
+│
+├── config.py                    # Configuration management. Loads environment variables
+│                                # from .env file (DATABASE_URL, GROQ_API_KEY, etc.)
+│                                # using Pydantic Settings with validation
+│
+├── database.py                  # Connection management ONLY. Handles asyncpg pool
+│                                # initialization and cleanup. Knows NOTHING about
+│                                # table schemas or SQL queries. Provides get_connection()
+│                                # context manager for repositories to use
+│
+├── schema.py                    # Database schema definition ONLY. Contains SQL DDL
+│                                # (CREATE TABLE, CREATE INDEX statements). Knows NOTHING
+│                                # about connection management. Called by main.py during
+│                                # startup to ensure tables exist
+│
+├── models.py                    # Pydantic models/schemas. Defines data structures for:
+│                                # - Request/Response validation (StudentCreate, FeedbackResponse)
+│                                # - Data transfer between layers (StrugglingStudent, etc.)
+│                                # - Type safety across the application
+│
+├── dependencies.py              # Dependency injection wiring for FastAPI. Factory functions
+│                                # that create and inject repository and service instances
+│                                # into routes using FastAPI's Depends(). Manages singleton
+│                                # lifecycle of services
+│
+├── repositories/                # DATA ACCESS LAYER: SQL queries and database operations only
+│   ├── __init__.py              # Makes it a Python package
+│   ├── base.py                  # Abstract base class for repositories (optional but good practice)
+│   ├── student_repository.py    # Student-related SQL: get_by_id, get_by_email, create
+│   ├── quiz_repository.py       # Quiz-related SQL: save_results, get_recent_mistakes, count_attempts
+│   └── analytics_repository.py  # Analytics SQL: struggling students, hardest topic, class overview
+│
+├── services/                    # BUSINESS LOGIC LAYER: Orchestrates repositories, calculations,
+│   │                            # AI interactions. No SQL here, no HTTP here.
+│   ├── __init__.py              # Makes it a Python package, can expose service classes
+│   ├── ai_service.py            # Groq AI integration: generate_feedback, generate_question,
+│   │                            # generate_hint, generate_teaching_insights. Clean interface
+│   │                            # to external AI service.
+│   ├── student_service.py       # Student business logic: create_student (checks for duplicates),
+│   │                            # get_student. Orchestrates student_repository.
+│   ├── quiz_service.py          # Quiz business logic: process_answer (checks correctness,
+│   │                            # gets AI feedback, saves result, updates performance history),
+│   │                            # generate_question, get_hint. Orchestrates quiz_repository + ai_service.
+│   ├── progress_service.py      # Progress business logic: get_student_progress (calculates
+│   │                            # overall accuracy, formats topic breakdown). Orchestrates
+│   │                            # analytics_repository + student_repository.
+│   └── analytics_service.py     # Analytics business logic: get_struggling_students (enriches
+│                                # with weak topics), get_ai_teaching_insights (builds prompt,
+│                                # calls AI). Orchestrates analytics_repository + ai_service.
+│
+└── routes/                      # CONTROLLER LAYER: HTTP handling only. Thin wrappers that
+    │                            # validate input, call services, return responses.
+    │                            # No business logic, no SQL, no direct AI calls.
+    ├── __init__.py              # Makes it a Python package, exports routers
+    ├── students.py              # Student HTTP endpoints: POST /students, GET /students/{id}
+    │                            # Delegates to StudentService
+    ├── quiz.py                  # Quiz HTTP endpoints: POST /submit-answer, POST /generate-question,
+    │                            # POST /get-hint, GET /recent-mistakes/{student_id}
+    │                            # Delegates to QuizService
+    ├── progress.py              # Progress HTTP endpoints: GET /student-progress/{student_id}
+    │                            # Delegates to ProgressService
+    └── analytics.py             # Analytics HTTP endpoints: GET /analytics/struggling,
+                                 # GET /analytics/hardest-topic, GET /analytics/student-report/{id},
+                                 # GET /analytics/class-overview, POST /analytics/ai-teaching-insights/{id}
+                                 # Delegates to AnalyticsService
