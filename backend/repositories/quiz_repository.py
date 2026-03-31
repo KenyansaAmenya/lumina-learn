@@ -20,7 +20,7 @@ class QuizRepository:
                 VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
                 RETURNING id, is_correct, ai_explanation, created_at
             """, student_id, topic, question, correct_answer, student_answer, is_correct, time_taken_seconds, ai_explanation)
-            return dict(row) if row else None  # Also added null check
+            return dict(row) if row else None  
 
     async def get_recent_mistakes(self, student_id: int, limit: int = 5) -> List[dict]:
         async with get_connection() as conn:

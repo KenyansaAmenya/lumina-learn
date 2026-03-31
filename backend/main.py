@@ -41,10 +41,13 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
+        "http://localhost:3000",      # Frontend dev server
+        "http://127.0.0.1:3000",
         "http://localhost:8000",
         "https://127.0.0.1:3000", 
         "https://lumina-learn-five.vercel.app", 
-        "https://lumina-ui-topaz.vercel.app" 
+        "https://lumina-ui-topaz.vercel.app",
+        "lumin-wheat-ten.vercel.app" 
     ],
     allow_credentials=True,
     allow_methods=["*"],
