@@ -24,11 +24,11 @@ class QuizRepository:
 
     async def get_recent_mistakes(self, student_id: int, limit: int = 5) -> List[dict]:
         async with get_connection() as conn:
-            rows = await conn.fetch("""  # ← Removed first "return", assign to rows
+            rows = await conn.fetch(""" 
                 SELECT topic, question, student_answer, correct_answer, ai_explanation, created_at
                 FROM quiz_results
                 WHERE student_id = $1 AND is_correct = false
-                ORDER BY created_at DESC  # ← Fixed: created_at not "create_at"
+                ORDER BY created_at DESC  
                 LIMIT $2
             """, student_id, limit)
             return [dict(row) for row in rows] 
