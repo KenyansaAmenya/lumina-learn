@@ -47,7 +47,7 @@ app.add_middleware(
         "https://127.0.0.1:3000", 
         "https://lumina-learn-five.vercel.app", 
         "https://lumina-ui-topaz.vercel.app",
-        "lumin-wheat-ten.vercel.app" 
+        "https://lumina-wheat-ten.vercel.app" 
     ],
     allow_credentials=True,
     allow_methods=["*"],
