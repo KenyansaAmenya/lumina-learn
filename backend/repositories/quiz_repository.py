@@ -2,7 +2,7 @@ from typing import List, Optional
 from database import get_connection
 
 class QuizRepository:
-    async def save_results(
+    async def save_result(
         self, 
         student_id: int,
         topic: str,
