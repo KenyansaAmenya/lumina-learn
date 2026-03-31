@@ -18,20 +18,20 @@ class QuizRepository:
                 INSERT INTO quiz_results
                 (student_id, topic, question, correct_answer, student_answer, is_correct, time_taken_seconds, ai_explanation)
                 VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-                RETURNING id, is_correct, ai_explanation, created_at  # ← Fixed: created_at not "created at"
+                RETURNING id, is_correct, ai_explanation, created_at
             """, student_id, topic, question, correct_answer, student_answer, is_correct, time_taken_seconds, ai_explanation)
-            return dict(row) 
+            return dict(row) if row else None  # Also added null check
 
     async def get_recent_mistakes(self, student_id: int, limit: int = 5) -> List[dict]:
         async with get_connection() as conn:
-            rows = await conn.fetch(""" 
+            rows = await conn.fetch("""
                 SELECT topic, question, student_answer, correct_answer, ai_explanation, created_at
                 FROM quiz_results
                 WHERE student_id = $1 AND is_correct = false
-                ORDER BY created_at DESC  
+                ORDER BY created_at DESC
                 LIMIT $2
             """, student_id, limit)
-            return [dict(row) for row in rows] 
+            return [dict(row) for row in rows]
 
     async def count_attempts(self, student_id: int, question: str) -> int:
         async with get_connection() as conn:
