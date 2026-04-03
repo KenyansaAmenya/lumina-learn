@@ -23,7 +23,7 @@ LuminaLearn demonstrates how AI can improve digital education by:
 ------------------------------------------------------------------------
 
 # 🧠 System Architecture
-
+```
 Student UI (HTML + Tailwind)
         │
         ▼
@@ -39,7 +39,7 @@ Services  Repositories   Groq LLM
         ▼
    PostgreSQL
    (Supabase DB)
-
+```
    ------------------------------------------------------------------------
 
 # 🏗️ Backend Architecture (Controller-Service-Repository Pattern)
