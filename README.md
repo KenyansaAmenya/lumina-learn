@@ -98,7 +98,7 @@ Validate   Business    SQL Queries
 ------------------------------------------------------------------------
 
 # 🧩 Project Structure
-
+```
 lumina-learn/
 ├── backend/
 │   ├── .env                    # SUPABASE_URL, GROQ_API_KEY
@@ -139,7 +139,7 @@ lumina-learn/
         ├── api.js              # Fetch wrappers
         ├── quiz.js             # Student interaction
         └── dashboard.js        # Charts/reports
-
+```
 ------------------------------------------------------------------------
 
 # ⚙️ Technology Stack
